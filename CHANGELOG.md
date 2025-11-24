@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2025-11-24
+
+### Fixed
+- Corrected an issue where AI opponents' gold was displayed as `undefined`.
+- Adjusted the scale of the tournament bracket UI to be more compact.
+- Fixed a bug where the heartbeat sound and visual effect would persist after exiting a game.
+- Resolved a translation issue in the high score display for the English version.
+
+### Changed
+- Standardized the width of difficulty selection buttons for a consistent UI.
+
+## [1.2.0] - 2025-11-24
+
+### Added
+- Implemented a "Heartbeat Pulse" effect: a pulsing red overlay that synchronizes with the heartbeat sound to increase tension during the player's turn.
+- Implemented a custom confirmation dialog with a red, semi-transparent overlay for the revival screen to enhance the "blood splatter" effect upon death.
+
+### Changed
+- Replaced the browser's native `confirm()` dialog with the new custom dialog for a more immersive user experience.
+
 ## [1.0.0] - 2025-11-24
 
 ### Added

@@ -27,6 +27,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const chamberCounterEl = document.getElementById('chamber-counter');
     const playerAvatarEl = document.getElementById('player-avatar');
     const opponentAvatarEl = document.getElementById('opponent-avatar');
+    const pulsingOverlayEl = document.getElementById('pulsing-overlay');
+    const confirmationOverlayEl = document.getElementById('confirmation-overlay');
+    const confirmationMessageEl = document.getElementById('confirmation-message');
+    const confirmYesButton = document.getElementById('confirm-yes-button');
+    const confirmNoButton = document.getElementById('confirm-no-button');
 
     // Game State
     let player = { name: '你', gold: 0, isTurn: false, lives: 1 };
@@ -70,12 +75,18 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function playSound(sound, loop = false) {
+        if (sound === 'heartbeat') {
+            pulsingOverlayEl.classList.add('active');
+        }
         sounds[sound].loop = loop;
         sounds[sound].currentTime = 0;
         sounds[sound].play().catch(e => console.error(`Error playing sound: ${sound}`, e));
     }
 
     function stopSound(sound) {
+        if (sound === 'heartbeat') {
+            pulsingOverlayEl.classList.remove('active');
+        }
         sounds[sound].pause();
         sounds[sound].currentTime = 0;
     }
@@ -99,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Stop all sounds
+        stopSound('heartbeat'); // Explicitly stop heartbeat and remove pulse
         Object.values(sounds).forEach(sound => {
             sound.pause();
             sound.currentTime = 0;
@@ -127,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentOpponents = gameState.lang === 'zh' ? opponents_zh : opponents_en;
         player.name = gameState.lang === 'zh' ? '你' : 'You';
         
-        let participants = [{...player, avatar: '🙂'}, ...currentOpponents.map(o => ({...o}))];
+        let participants = [{...player, avatar: '🙂'}, ...currentOpponents.map(o => ({...o, gold: 0}))]; // Initialize opponent gold
         participants.sort(() => Math.random() - 0.5);
         
         // Set player avatar in the duel screen
@@ -355,22 +367,55 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function showConfirmation(message, onYes, onNo) {
+        confirmationMessageEl.textContent = message;
+        confirmationOverlayEl.classList.add('active');
+
+        const yesHandler = () => {
+            confirmationOverlayEl.classList.remove('active');
+            onYes();
+            confirmYesButton.removeEventListener('click', yesHandler);
+            confirmNoButton.removeEventListener('click', noHandler);
+        };
+
+        const noHandler = () => {
+            confirmationOverlayEl.classList.remove('active');
+            onNo();
+            confirmYesButton.removeEventListener('click', yesHandler);
+            confirmNoButton.removeEventListener('click', noHandler);
+        };
+
+        confirmYesButton.addEventListener('click', yesHandler);
+        confirmNoButton.addEventListener('click', noHandler);
+    }
+
     function handleDeath() {
-        let resurrectionCost = { 'Easy': 1000, 'Normal': 1500, 'Hard': 3000, 'Hell': 10000 }[gameState.difficulty];
+        const resurrectionCost = { 'Easy': 1000, 'Normal': 1500, 'Hard': 3000, 'Hell': 10000 }[gameState.difficulty];
         const confirmMsg = gameState.lang === 'zh' ? `枪响了！是否花费 $${resurrectionCost} 买一条命？` : `BANG! Spend $${resurrectionCost} to buy your life back?`;
 
-        if (player.gold >= resurrectionCost && confirm(confirmMsg)) {
-            player.gold -= resurrectionCost;
-            messageBoxEl.textContent = gameState.lang === 'zh' ? `你花钱买通了裁判！裁判重新装填了子弹...` : `You bribed the judge! The gun is being reloaded...`;
-            updateUI();
-            setTimeout(setupNewDuel, 2000);
-        } else {
+        const die = () => {
             messageBoxEl.textContent = gameState.lang === 'zh' ? "枪响了... 你死了。金币不足以复活。" : "BANG... You're dead. Not enough gold to resurrect.";
             actionButton.textContent = translations[gameState.lang].gameOverTitle;
             gameState.gameOver = true;
             player.loser = true;
             playerAvatarEl.classList.add('ko');
             setTimeout(showGameOver, 2000);
+        };
+
+        if (player.gold >= resurrectionCost) {
+            showConfirmation(confirmMsg, 
+                () => { // onYes
+                    player.gold -= resurrectionCost;
+                    messageBoxEl.textContent = gameState.lang === 'zh' ? `你花钱买通了裁判！裁判重新装填了子弹...` : `You bribed the judge! The gun is being reloaded...`;
+                    updateUI();
+                    setTimeout(setupNewDuel, 2000);
+                },
+                () => { // onNo
+                    die();
+                }
+            );
+        } else {
+            die();
         }
     }
 
@@ -410,10 +455,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function loadHighScore() {
         const score = localStorage.getItem('russianRouletteHighScore') || '0';
-        const rank = localStorage.getItem('russianRouletteHighScoreRank') || (gameState.lang === 'zh' ? '无' : 'N/A');
+        let rank = localStorage.getItem('russianRouletteHighScoreRank') || (gameState.lang === 'zh' ? '无' : 'N/A');
         const date = localStorage.getItem('russianRouletteHighScoreDate') || (gameState.lang === 'zh' ? '无记录' : 'No Record');
-        const translatedRank = (rank === "冠军" && gameState.lang === 'en') ? "Champion" : rank;
-        return `${gameState.lang === 'zh' ? '第1名' : '1st'}: ${translatedRank} - ${score} ${gameState.lang === 'zh' ? '金币' : 'Gold'} (${date})`;
+
+        if (gameState.lang === 'en') {
+            const rankMap = {
+                "冠军": "Champion",
+                "亚军 (决赛)": "Runner-up",
+                "4强 (半决赛)": "Semi-finals",
+                "8强": "Quarter-finals",
+                "16强": "Round of 16",
+                "无": "N/A"
+            };
+            rank = rankMap[rank] || rank;
+        }
+
+        return `${gameState.lang === 'zh' ? '第1名' : '1st'}: ${rank} - ${score} ${gameState.lang === 'zh' ? '金币' : 'Gold'} (${date})`;
     }
 
     // --- Event Listeners ---
