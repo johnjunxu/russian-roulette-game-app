@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>俄罗斯轮盘赌锦标赛</title>
+    <link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+    <div id="main-menu" class="menu-screen active">
+        <div class="menu-content">
+            <h1 class="game-title" data-lang="title">俄罗斯轮盘赌</h1>
+            <button id="start-game-button" data-lang="startGame">开始游戏</button>
+            <button id="history-button" data-lang="history">游戏记录</button>
+            <button id="rules-button" data-lang="rules">规则说明</button>
+        </div>
+        <button id="lang-toggle-button" data-lang="langToggle">English Version</button>
+    </div>
+
+    <div id="difficulty-selection" class="menu-screen">
+        <h1 class="game-title" data-lang="selectDifficulty">选择难度</h1>
+        <button class="difficulty-button" data-difficulty="Easy" data-lang="easy">简单</button>
+        <button class="difficulty-button" data-difficulty="Normal" data-lang="normal">普通</button>
+        <button class="difficulty-button" data-difficulty="Hard" data-lang="hard">困难</button>
+        <button class="difficulty-button" data-difficulty="Hell" data-lang="hell">地狱</button>
+    </div>
+
+    <div id="rules-screen" class="menu-screen">
+        <h1 class="game-title" data-lang="rulesTitle">游戏规则</h1>
+        <div class="rules-text">
+            <p data-lang="rule1">1. 这是一个16人参加的俄罗斯轮盘赌淘汰赛。</p>
+            <p data-lang="rule2">2. 每轮对决中，一把6发左轮手枪只装填1颗子弹。</p>
+            <p data-lang="rule3">3. 你和对手轮流对自己开枪，直到有人中枪。</p>
+            <p data-lang="rule4">4. 赢得比赛可以获得金币奖励。</p>
+            <p data-lang="rule5">5. 如果你不幸中枪，只要有足够的金币，就可以买命免死。</p>
+        </div>
+        <button class="back-button" data-lang="backToMenu">返回</button>
+    </div>
+
+    <div id="history-screen" class="menu-screen">
+        <h1 class="game-title" data-lang="highScoreTitle">最高记录</h1>
+        <p id="high-score-display"></p>
+        <button class="back-button" data-lang="backToMenu">返回</button>
+    </div>
+
+    <div id="bracket-container" class="menu-screen">
+        <div class="bracket-header">
+            <h1 class="game-title" data-lang="bracketTitle">锦标赛对阵图</h1>
+            <button id="continue-to-duel" data-lang="continueToDuel">进入对决</button>
+        </div>
+        <div id="bracket"></div>
+    </div>
+
+    <div id="game-over-screen" class="menu-screen">
+        <h1 class="game-title" data-lang="gameOverTitle">游戏结束</h1>
+        <p id="final-rank"></p>
+        <button id="restart-button" data-lang="backToMenu">返回主菜单</button>
+    </div>
+
+    <div id="game-container" style="display: none;">
+        <button id="exit-game-button" data-lang="exitGame">退出游戏</button>
+        <div id="table">
+            <div id="player-area" class="player-info">
+                <div class="avatar" id="player-avatar"></div>
+                <h2 id="player-name" data-lang="you">你</h2>
+                <p><span data-lang="gold">金币: </span><span id="player-gold">--</span></p>
+            </div>
+
+            <div id="game-board">
+                <h1 class="game-title" data-lang="duelTitle">生死对决</h1>
+                <div id="gun-area">
+                    <div id="cylinder"></div>
+                    <div id="chamber-counter">6</div>
+                </div>
+                <div id="message-box" data-lang="prepare">请准备...</div>
+                <button id="action-button" disabled data-lang="wait">等待</button>
+            </div>
+
+            <div id="opponent-area" class="player-info">
+                <div class="avatar" id="opponent-avatar"></div>
+                <h2 id="opponent-name">对手</h2>
+                <p><span data-lang="gold">金币: </span><span id="opponent-gold">--</span></p>
+            </div>
+        </div>
+    </div>
+    <script src="translations.js?v=2"></script>
+    <script src="script.js?v=2"></script>
+</body>

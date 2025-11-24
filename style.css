@@ -1,0 +1,329 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Heebo&display=swap');
+
+body {
+    background-color: #1a1a1a;
+    color: #f5f5f5;
+    font-family: "SimHei", "黑体", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+body.lang-en {
+    font-family: "Times New Roman", Times, serif;
+}
+
+body.lang-zh {
+    font-family: "SimHei", "黑体", sans-serif;
+}
+
+#main-menu {
+    background: url('background.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+#main-menu .game-title {
+    text-align: center;
+}
+
+@keyframes fadeInLight {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#game-container {
+    width: 100%;
+    height: 100%;
+    background: url('play-bg.jpg') no-repeat center center;
+    background-size: cover;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#exit-game-button {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    font-size: 1.2em;
+    padding: 10px 20px;
+    background-color: #7c2a2a;
+    border: 2px solid #ab4444;
+    color: #f5f5f5;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#exit-game-button:hover {
+    background-color: #ab4444;
+    color: #1a1a1a;
+}
+
+#table {
+    width: 1000px;
+    height: 600px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: none;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.player-info {
+    text-align: center;
+    width: 200px;
+    padding: 20px;
+}
+
+.avatar {
+    width: 120px;
+    height: 120px;
+    background-color: #333;
+    border: 4px solid #555;
+    border-radius: 50%;
+    margin: 0 auto 15px auto;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    background-size: 80%;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.avatar.ko::after {
+    content: 'X';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 160px;
+    color: #ff0000;
+    text-shadow: 0 0 10px #000, 0 0 20px #000;
+    font-weight: bold;
+}
+
+#game-board {
+    text-align: center;
+    width: 450px;
+    background-color: transparent !important;
+}
+
+.game-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3em;
+    color: #ab4444;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+    margin: 0 0 20px 0;
+}
+
+#message-box {
+    min-height: 50px;
+    font-size: 1.5em;
+    padding: 10px;
+    margin: 20px 0;
+    color: #ddd;
+    border: 2px dashed #555;
+    background-color: transparent !important;
+}
+
+#action-button {
+    font-family: "SimHei", "黑体", sans-serif;
+    font-size: 1.5em;
+    padding: 15px 40px;
+    cursor: pointer;
+    border: 3px solid #ab4444;
+    background-color: #7c2a2a;
+    color: #f5f5f5;
+    text-transform: uppercase;
+    border-radius: 5px;
+    box-shadow: 0 5px 0 #4a1a1a, 0 8px 10px rgba(0,0,0,0.5);
+    transition: all 0.1s ease-in-out;
+}
+
+#action-button:hover:not(:disabled) {
+    background-color: #8c3a3a;
+}
+
+#action-button:active:not(:disabled) {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 #4a1a1a;
+}
+
+#action-button:disabled {
+    background-color: #555;
+    border-color: #777;
+    color: #aaa;
+    cursor: not-allowed;
+    box-shadow: 0 5px 0 #333;
+}
+
+.menu-screen {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: #1a1a1a;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.menu-screen.active {
+    display: flex;
+}
+
+#game-over-screen {
+    background: url('lost-bg.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+#win-screen {
+    background: url('win-bg.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+.menu-screen button {
+    font-family: "SimHei", "黑体", sans-serif;
+    font-size: 1.8em;
+    padding: 15px 50px;
+    margin: 15px;
+    cursor: pointer;
+    border: 3px solid #ab4444;
+    background-color: #7c2a2a;
+    color: #f5f5f5;
+    transition: all 0.2s;
+}
+
+.menu-screen button:hover {
+    background-color: #ab4444;
+    color: #1a1a1a;
+}
+
+.rules-text {
+    max-width: 600px;
+    text-align: left;
+    font-size: 1.2em;
+    line-height: 1.8;
+    color: #e0d1b3;
+    background-color: rgba(0,0,0,0.7);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#bracket-container {
+    justify-content: flex-start;
+    flex-direction: column;
+    overflow-x: auto;
+}
+
+.bracket-header {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#bracket {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.round {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.match {
+    background-color: rgba(0,0,0,0.2);
+    border: 2px solid #555;
+    padding: 10px;
+    margin: 0 15px;
+    width: 220px;
+    min-height: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+
+.participant {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    transition: all 0.3s;
+}
+
+.participant.winner {
+    font-weight: bold;
+    color: #ff5555;
+}
+
+.participant.loser {
+    opacity: 0.4;
+    text-decoration: line-through;
+}
+
+.participant-avatar {
+    font-size: 1.5em;
+    margin-right: 10px;
+}
+
+#high-score-display {
+    font-size: 1.5em;
+    color: #ddd;
+    background-color: rgba(0,0,0,0.7);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#gun-area {
+    position: relative;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: none !important;
+}
+
+#cylinder {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    transition: transform 0.5s ease-in-out;
+}
+
+.chamber {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border: 2px solid #555;
+    border-radius: 50%;
+    background-color: rgba(0,0,0,0.3);
+    top: 50%;
+    left: 50%;
+    margin: -25px;
+}
+
+.chamber.loaded {
+    background-color: #c9b48a;
+}
+
+#chamber-counter {
+    position: absolute;
+    font-size: 3em;
+    color: #ddd;
+}
