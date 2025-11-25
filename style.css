@@ -422,13 +422,13 @@ body.lang-zh {
 #lang-toggle-button,
 #difficulty-selection .difficulty-button,
 .bracket-header #continue-to-duel {
-    font-size: 0.9em;    /* 50% of 1.8em */
-    padding: 8px 25px;   /* ~50% of 15px 50px */
-    margin: 8px;         /* ~50% of 15px */
+    font-size: 1.17em;    /* 0.9em * 1.3 */
+    padding: 10px 32px;  /* ~8px*1.3, ~25px*1.3 */
+    margin: 10px;        /* ~8px * 1.3 */
     border-width: 2px;
 }
 
 /* Override existing min-width for difficulty buttons */
 #difficulty-selection .difficulty-button {
-    min-width: 125px;    /* 50% of 250px */
+    min-width: 162px;    /* 125px * 1.3 */
 }
