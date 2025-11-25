@@ -416,3 +416,18 @@ body.lang-zh {
     font-size: 1em; /* Further reduced */
     margin-right: 5px; /* Further reduced */
 }
+
+/* Button Scaling for Main Menu, Difficulty, and Bracket Screens */
+#main-menu .menu-content button,
+#difficulty-selection .difficulty-button,
+.bracket-header #continue-to-duel {
+    font-size: 0.9em;    /* 50% of 1.8em */
+    padding: 8px 25px;   /* ~50% of 15px 50px */
+    margin: 8px;         /* ~50% of 15px */
+    border-width: 2px;
+}
+
+/* Override existing min-width for difficulty buttons */
+#difficulty-selection .difficulty-button {
+    min-width: 125px;    /* 50% of 250px */
+}
