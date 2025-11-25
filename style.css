@@ -419,6 +419,7 @@ body.lang-zh {
 
 /* Button Scaling for Main Menu, Difficulty, and Bracket Screens */
 #main-menu .menu-content button,
+#lang-toggle-button,
 #difficulty-selection .difficulty-button,
 .bracket-header #continue-to-duel {
     font-size: 0.9em;    /* 50% of 1.8em */
